@@ -1,0 +1,25 @@
+-- Storage objects এর জন্য policy
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('ecg-recordings', 'ecg-recordings', true)
+ON CONFLICT (id) DO UPDATE SET public = true;
+
+-- পুরনো policy থাকলে drop করো
+DROP POLICY IF EXISTS "public read ecg" ON storage.objects;
+DROP POLICY IF EXISTS "public upload ecg" ON storage.objects;
+
+-- নতুন সঠিক policy
+CREATE POLICY "allow anon select"
+ON storage.objects FOR SELECT TO anon
+USING (bucket_id = 'ecg-recordings');
+
+CREATE POLICY "allow anon insert"
+ON storage.objects FOR INSERT TO anon
+WITH CHECK (bucket_id = 'ecg-recordings');
+
+CREATE POLICY "allow anon update"
+ON storage.objects FOR UPDATE TO anon
+USING (bucket_id = 'ecg-recordings');
+
+CREATE POLICY "allow anon delete"
+ON storage.objects FOR DELETE TO anon
+USING (bucket_id = 'ecg-recordings');
