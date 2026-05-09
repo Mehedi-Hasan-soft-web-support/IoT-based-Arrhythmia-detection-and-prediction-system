@@ -1,2 +1,5 @@
-Wifi SSID : Me
-password: mehedi113
+# WiFi Configuration
+
+```cpp
+const char* ssid = "Me";
+const char* password = "mehedi113";
